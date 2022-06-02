@@ -43,7 +43,8 @@ public class Persistencia {
     }
 
     public ResultSet consultar(String sql) {
-        try ( Statement st = connection.createStatement()) {
+        try {
+            Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
             return rs;
         } catch (SQLException ex) {
@@ -52,7 +53,7 @@ public class Persistencia {
         }
     }
 
-    public boolean modificar(String sql) {
+    public boolean modificar(String sql) throws SQLException {
         boolean res = false;
 
         try ( Statement st = connection.createStatement()) {
@@ -62,6 +63,7 @@ public class Persistencia {
             }
         } catch (SQLException ex) {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+            throw new SQLException(ex);
         }
 
         return res;

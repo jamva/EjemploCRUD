@@ -52,4 +52,11 @@ public class ModeloUsuario {
     public void setClave(String clave) {
         this.clave = clave;
     }
+
+    @Override
+    public String toString() {
+        return "ModeloUsuario{" + "id=" + id + ", email=" + email + ", nombre=" + nombre + ", clave=" + clave + '}';
+    }
+
+    
 }

@@ -36,12 +36,12 @@ public class UsuarioControl {
                 DialogoCrearUsuario dlgUsuario = new DialogoCrearUsuario(ul, true);
                 dlgUsuario.setVisible(true);
             }
-        });       
+        });
 
         ul.setVisible(true);
     }
 
-    public static boolean crear(ModeloUsuario usuario) {
+    public static boolean crear(ModeloUsuario usuario) throws SQLException {
         boolean res = false;
 
         String sql = "INSERT INTO usuarios(email, nombre, clave)"
@@ -70,7 +70,7 @@ public class UsuarioControl {
         return usuario;
     }
 
-    private List<ModeloUsuario> consultarTodos() {
+    public static List<ModeloUsuario> consultarTodos() {
         List<ModeloUsuario> lista = new ArrayList<>();
 
         String sql = "select * from usuarios";
@@ -87,12 +87,22 @@ public class UsuarioControl {
         return lista;
     }
 
-    private boolean modificar(ModeloUsuario usuario) {
+    public static boolean modificar(ModeloUsuario usuario) throws SQLException {
         boolean res = false;
 
         String sql = "UPDATE public.usuarios SET email='" + usuario.getEmail() + "', "
                 + "nombre='" + usuario.getNombre() + "', clave='" + usuario.getClave() + "'"
                 + " WHERE id='" + usuario.getId() + "'";
+
+        res = Persistencia.getInstancia().modificar(sql);
+
+        return res;
+    }
+
+    public static boolean elimiar(Integer id) throws SQLException {
+        boolean res = false;
+
+        String sql = "DELETE from usuarios where id=" + id;
 
         res = Persistencia.getInstancia().modificar(sql);
 
