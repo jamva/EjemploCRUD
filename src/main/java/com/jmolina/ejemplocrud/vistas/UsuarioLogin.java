@@ -4,8 +4,12 @@
  */
 package com.jmolina.ejemplocrud.vistas;
 
+import com.jmolina.ejemplocrud.controladores.UsuarioControl;
+import com.jmolina.ejemplocrud.modelos.ModeloUsuario;
+import com.jmolina.ejemplocrud.util.UsuarioLogeado;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -40,7 +44,6 @@ public class UsuarioLogin extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         opCrearUsuario = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,6 +66,11 @@ public class UsuarioLogin extends javax.swing.JFrame {
         btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnLogin.setForeground(new java.awt.Color(255, 255, 255));
         btnLogin.setText("LOGIN");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -72,9 +80,6 @@ public class UsuarioLogin extends javax.swing.JFrame {
 
         opCrearUsuario.setText("Crear Usuario");
         jMenu1.add(opCrearUsuario);
-
-        jMenuItem2.setText("Consultar Usuario");
-        jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
 
@@ -128,7 +133,11 @@ public class UsuarioLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txEmailActionPerformed
 
-  
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        login();
+    }//GEN-LAST:event_btnLoginActionPerformed
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel jLabel1;
@@ -136,12 +145,10 @@ public class UsuarioLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem opCrearUsuario;
     private javax.swing.JPasswordField txClave;
     private javax.swing.JTextField txEmail;
     // End of variables declaration//GEN-END:variables
-
 
     public JButton getBtnLogin() {
         return btnLogin;
@@ -157,5 +164,42 @@ public class UsuarioLogin extends javax.swing.JFrame {
 
     public JMenuItem getOpCrearUsuario() {
         return opCrearUsuario;
+    }
+
+    private void login() {
+        String email = txEmail.getText();
+        String clave = txClave.getText();
+
+        boolean paso = true;
+
+        try {
+            validar(email, clave);
+        } catch (Exception e) {
+            paso = false;
+            JOptionPane.showMessageDialog(rootPane, e.getMessage(), "Alerta", JOptionPane.WARNING_MESSAGE);
+        }
+
+        if (paso) {
+            UsuarioLogeado.setUsuario(new ModeloUsuario(null, email, null, clave));
+
+            UsuarioLogeado.setUsuario(UsuarioControl.login(UsuarioLogeado.getUsuario()));
+
+            if (UsuarioLogeado.getUsuario() == null) {
+                JOptionPane.showMessageDialog(rootPane, "Datos incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (UsuarioLogeado.getUsuario().getId() != null) {
+                Principal principal = new Principal();
+                principal.setVisible(true);
+            }
+        }
+    }
+
+    private void validar(String email, String clave) throws Exception {
+        if (email == null || email.isEmpty()) {
+            throw new Exception("El email es invalido");
+        }
+
+        if (clave == null || clave.isEmpty()) {
+            throw new Exception("La clave es invalida");
+        }
     }
 }

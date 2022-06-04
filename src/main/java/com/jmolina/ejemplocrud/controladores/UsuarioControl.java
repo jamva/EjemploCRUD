@@ -109,9 +109,9 @@ public class UsuarioControl {
         return res;
     }
 
-    private ModeloUsuario login(ModeloUsuario usuario) {
+    public static ModeloUsuario login(ModeloUsuario usuario) {
 
-        String sql = "select * from usaurios where email='" + usuario.getEmail() + "' and clave='" + usuario.getClave() + "'";
+        String sql = "select * from usuarios where email='" + usuario.getEmail() + "' and clave='" + usuario.getClave() + "'";
 
         try ( ResultSet rs = Persistencia.getInstancia().consultar(sql)) {
             if (rs.next()) {
