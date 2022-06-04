@@ -1,0 +1,9 @@
+para subir los cambios al gitHub
+
+se valida el estado con el comando 'git status'
+
+primero: se agregan los cambios al commit con el comando 'git add .'
+
+segundo: se crea el commit con el comando 'git commit -m "aqui va el mensaje" '
+
+tercero: se sube el commit al repo remoto con el comando 'git push'
