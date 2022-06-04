@@ -17,7 +17,7 @@ CREATE DATABASE prueba
 
 CREATE TABLE IF NOT EXISTS public.usuarios
 (
-    id integer NOT NULL DEFAULT nextval('usuarios_id_seq'::regclass),
+    id serial,
     email character varying(100) COLLATE pg_catalog."default" NOT NULL,
     nombre character varying(100) COLLATE pg_catalog."default" NOT NULL,
     clave character varying(100) COLLATE pg_catalog."default" NOT NULL,
