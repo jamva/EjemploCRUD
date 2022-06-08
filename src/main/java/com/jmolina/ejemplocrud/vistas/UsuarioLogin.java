@@ -187,6 +187,7 @@ public class UsuarioLogin extends javax.swing.JFrame {
             if (UsuarioLogeado.getUsuario() == null) {
                 JOptionPane.showMessageDialog(rootPane, "Datos incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
             } else if (UsuarioLogeado.getUsuario().getId() != null) {
+                this.setVisible(false);
                 Principal principal = new Principal();
                 principal.setVisible(true);
             }
