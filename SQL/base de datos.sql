@@ -29,3 +29,27 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.usuarios
     OWNER to postgres;
+	
+	
+
+
+
+-- Table: public.vehiculos
+
+-- DROP TABLE IF EXISTS public.vehiculos;
+
+CREATE TABLE IF NOT EXISTS public.vehiculos
+(
+    id serial,
+    placa character varying COLLATE pg_catalog."default" NOT NULL,
+    modelo integer NOT NULL,
+    color character varying COLLATE pg_catalog."default" NOT NULL,
+    marca character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT vehiculos_pkey PRIMARY KEY (id),
+    CONSTRAINT vehiculos_uk UNIQUE (placa)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.vehiculos
+    OWNER to postgres;
