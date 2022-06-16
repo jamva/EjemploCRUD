@@ -25,10 +25,10 @@ public class CrearVehiculoControl {
 
     private void init() {
         vista = new CrearVehiculoVista();
-        vista.getBtnCrear().addActionListener(action -> {
+          vista.getBtnCrear().addActionListener(action -> {///cuando crea un evento haga la accion
             try {
                 if (crear(getVehiculo())) {
-                    JOptionPane.showMessageDialog(vista, "Se creó vehiculo con exito", "Crar", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(vista, "Se creó vehiculo con exito", "Crear", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     throw new SQLException(".");
                 }
@@ -36,12 +36,43 @@ public class CrearVehiculoControl {
                 JOptionPane.showMessageDialog(vista, "Error al crar el vehiculo\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+        
+        vista.getBtnModificar().addActionListener(action ->{
+            try {
+                if(modificar(getVehiculo())){
+                    JOptionPane.showMessageDialog(vista, "Se modifico el auto correctamente", "modificar",JOptionPane.INFORMATION_MESSAGE);
+                    
+                }else{
+                    throw new SQLException(".");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(vista, "ERROR AL MODIFICAR VEHICULO\n" + e.getMessage(), "Error",JOptionPane.ERROR_MESSAGE );
+            }
+            
+        });
+                
+      
+        
+        vista.getBtnEliminar().addActionListener(action ->{
+            try {
+                if(eliminar(getVehiculo())){
+                    JOptionPane.showMessageDialog(vista,"Se Elimino vehiculo con exito", "Eliminar", JOptionPane.INFORMATION_MESSAGE );
+                }else{
+                     throw new SQLException(".");
+                }
+            } catch (Exception e) {
+                     JOptionPane.showMessageDialog(vista, "Error al Eliminar el vehiculo\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        
+        });
         vista.setVisible(true);
     }
 
     public CrearVehiculoVista getVista() {
         return vista;
     }
+    
+    
 
     private ModeloVehiculo getVehiculo() {
         ModeloVehiculo vehiculo;
@@ -67,6 +98,24 @@ public class CrearVehiculoControl {
         res = Persistencia.getInstancia().modificar(sql);
 
         return res;
+    }
+    
+    public static boolean modificar(ModeloVehiculo vehiculo) throws SQLException{
+      boolean res=false;
+      
+      String sql="UPDATE public.vehiculo SET placa='"+vehiculo.getPlaca()+"',"
+              +"modelo='"+vehiculo.getModelo()+"',color='"+vehiculo.getColor()+"',"
+              +"marca='"+vehiculo.getMarca()+"'"+"WHERE id='"+vehiculo.getId()+"'";
+      res=Persistencia.getInstancia().modificar(sql);
+      return res;
+    }
+    
+    public static boolean eliminar(Integer id) throws SQLException{
+      boolean res =false;
+      
+      String sql="DELETE from vehiculos where id="+id;
+      res=Persistencia.getInstancia().modificar(sql);
+      return res;
     }
 
 }
