@@ -29,7 +29,7 @@ public class Persistencia {
         return instancia;
     }
 
-    public Persistencia() {
+    private Persistencia() {
         Conectar();
     }
 
@@ -72,6 +72,7 @@ public class Persistencia {
     public void cerrar() {
         try {
             connection.close();
+            instancia = null;
         } catch (SQLException ex) {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
         }

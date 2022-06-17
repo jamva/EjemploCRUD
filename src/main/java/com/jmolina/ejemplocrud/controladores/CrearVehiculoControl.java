@@ -8,6 +8,8 @@ import com.jmolina.ejemplocrud.modelos.ModeloVehiculo;
 import com.jmolina.ejemplocrud.util.Persistencia;
 import com.jmolina.ejemplocrud.vistas.CrearVehiculoVista;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -20,50 +22,50 @@ public class CrearVehiculoControl {
     private CrearVehiculoVista vista;
 
     public CrearVehiculoControl() {
-        init();
+        IniciarLogicaVista();
     }
 
-    private void init() {
-        vista = new CrearVehiculoVista();
-          vista.getBtnCrear().addActionListener(action -> {///cuando crea un evento haga la accion
+    private void IniciarLogicaVista() {
+        vista = new CrearVehiculoVista();        
+
+        vista.getBtnCrear().addActionListener(e -> {///cuando crea un evento haga la accion
             try {
                 if (crear(getVehiculo())) {
                     JOptionPane.showMessageDialog(vista, "Se creó vehiculo con exito", "Crear", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     throw new SQLException(".");
                 }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(vista, "Error al crar el vehiculo\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(vista, "Error al crar el vehiculo\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
-        
-        vista.getBtnModificar().addActionListener(action ->{
+
+        vista.getBtnModificar().addActionListener(action -> {
             try {
-                if(modificar(getVehiculo())){
-                    JOptionPane.showMessageDialog(vista, "Se modifico el auto correctamente", "modificar",JOptionPane.INFORMATION_MESSAGE);
-                    
-                }else{
+                if (modificar(getVehiculo())) {
+                    JOptionPane.showMessageDialog(vista, "Se modifico el auto correctamente", "modificar", JOptionPane.INFORMATION_MESSAGE);
+
+                } else {
                     throw new SQLException(".");
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(vista, "ERROR AL MODIFICAR VEHICULO\n" + e.getMessage(), "Error",JOptionPane.ERROR_MESSAGE );
+                JOptionPane.showMessageDialog(vista, "ERROR AL MODIFICAR VEHICULO\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            
         });
-                
-      
-        
-        vista.getBtnEliminar().addActionListener(action ->{
+
+        vista.getBtnEliminar().addActionListener(action -> {
             try {
-                if(eliminar(getVehiculo())){
-                    JOptionPane.showMessageDialog(vista,"Se Elimino vehiculo con exito", "Eliminar", JOptionPane.INFORMATION_MESSAGE );
-                }else{
-                     throw new SQLException(".");
+                Integer id = Integer.valueOf(vista.getTxId().getText());
+
+                if (eliminar(id)) {
+                    JOptionPane.showMessageDialog(vista, "Se Elimino vehiculo con exito", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    throw new SQLException(".");
                 }
             } catch (Exception e) {
-                     JOptionPane.showMessageDialog(vista, "Error al Eliminar el vehiculo\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(vista, "Error al Eliminar el vehiculo\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        
+
         });
         vista.setVisible(true);
     }
@@ -71,8 +73,6 @@ public class CrearVehiculoControl {
     public CrearVehiculoVista getVista() {
         return vista;
     }
-    
-    
 
     private ModeloVehiculo getVehiculo() {
         ModeloVehiculo vehiculo;
@@ -99,23 +99,23 @@ public class CrearVehiculoControl {
 
         return res;
     }
-    
-    public static boolean modificar(ModeloVehiculo vehiculo) throws SQLException{
-      boolean res=false;
-      
-      String sql="UPDATE public.vehiculo SET placa='"+vehiculo.getPlaca()+"',"
-              +"modelo='"+vehiculo.getModelo()+"',color='"+vehiculo.getColor()+"',"
-              +"marca='"+vehiculo.getMarca()+"'"+"WHERE id='"+vehiculo.getId()+"'";
-      res=Persistencia.getInstancia().modificar(sql);
-      return res;
+
+    public static boolean modificar(ModeloVehiculo vehiculo) throws SQLException {
+        boolean res = false;
+
+        String sql = "UPDATE public.vehiculo SET placa='" + vehiculo.getPlaca() + "',"
+                + "modelo='" + vehiculo.getModelo() + "',color='" + vehiculo.getColor() + "',"
+                + "marca='" + vehiculo.getMarca() + "'" + "WHERE id='" + vehiculo.getId() + "'";
+        res = Persistencia.getInstancia().modificar(sql);
+        return res;
     }
-    
-    public static boolean eliminar(Integer id) throws SQLException{
-      boolean res =false;
-      
-      String sql="DELETE from vehiculos where id="+id;
-      res=Persistencia.getInstancia().modificar(sql);
-      return res;
+
+    public static boolean eliminar(Integer id) throws SQLException {
+        boolean res = false;
+
+        String sql = "DELETE from vehiculos where id=" + id;
+        res = Persistencia.getInstancia().modificar(sql);
+        return res;
     }
 
 }
